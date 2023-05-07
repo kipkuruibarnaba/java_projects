@@ -18,11 +18,12 @@ public class Worker {
         int birthYear = Integer.parseInt(bithdate.substring(6));
         return (currentYear-birthYear);
     }
-    public Double collectPay(){
+    public double collectPay(){
       return 0.0;
     }
 
     public void terminate(String endDate){
+
         this.endDate=endDate;
     }
 
