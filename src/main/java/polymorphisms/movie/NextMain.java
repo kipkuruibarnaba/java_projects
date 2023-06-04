@@ -1,4 +1,4 @@
-package polymorphisms;
+package polymorphisms.movie;
 
 public class NextMain {
     public static void main(String[] args) {

@@ -1,4 +1,4 @@
-package polymorphisms;
+package polymorphisms.movie;
 
 import java.util.Scanner;
 

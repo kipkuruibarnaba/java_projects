@@ -1,4 +1,4 @@
-package polymorphisms;
+package polymorphisms.movie;
 
 public class Movie {
     private  String title;
