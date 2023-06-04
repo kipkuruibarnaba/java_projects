@@ -18,6 +18,7 @@ public class Car {
         System.out.println("Car -> driving, type is "+getClass().getSimpleName());
         runEngine();
     }
+
 }
 class GasPoweredCar extends Car {
     private double avgKmPerLitre;
