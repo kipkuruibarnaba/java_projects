@@ -1,4 +1,4 @@
-package arrays.usingArrays;
+package arrays.randomArrays;
 
 import java.util.Arrays;
 import java.util.Random;
@@ -23,6 +23,13 @@ public class Main {
         Arrays.sort(forthArray);
         System.out.println(Arrays.toString(thirdArray));
         System.out.println(Arrays.toString(forthArray));
+
+        int[] smallerArray = Arrays.copyOf(thirdArray, 5);
+        System.out.println(Arrays.toString(smallerArray));
+
+        int[] largeArray = Arrays.copyOf(thirdArray, 15);
+        System.out.println(Arrays.toString(largeArray));
+
 
     }
     private static int[] generateRandomArray(int len){
