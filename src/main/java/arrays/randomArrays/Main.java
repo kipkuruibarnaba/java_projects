@@ -29,8 +29,6 @@ public class Main {
 
         int[] largeArray = Arrays.copyOf(thirdArray, 15);
         System.out.println(Arrays.toString(largeArray));
-
-
     }
     private static int[] generateRandomArray(int len){
         Random random = new Random();
