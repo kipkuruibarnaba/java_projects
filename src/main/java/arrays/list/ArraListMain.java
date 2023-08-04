@@ -1,7 +1,6 @@
 package arrays.list;
 
 import java.util.ArrayList;
-
 public class ArraListMain {
     record GroceryItem(String name,String type,int count){
         public GroceryItem(String name){
