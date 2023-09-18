@@ -1,4 +1,4 @@
-package threads.exercise5;
+package threads.message6;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,14 +7,14 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import static threads.exercise5.ProducerConsumer.EOF;
 
-public class ProducerConsumer {
+public class Main {
     public static final String EOF = "EOF";
     public static void main(String[] args) {
      List<String> buffer = new ArrayList<String>();
      ReentrantLock bufferLock = new ReentrantLock();
-     MyProducer producer = new MyProducer(buffer,ThreadColor.ANSI_YELLOW,bufferLock);
-     MyConsumer consumer1 = new MyConsumer(buffer,ThreadColor.ANSI_PURPLE,bufferLock);
-     MyConsumer consumer2 = new MyConsumer(buffer,ThreadColor.ANSI_CYAN,bufferLock);
+     MyProducer producer = new MyProducer(buffer, ThreadColor.ANSI_YELLOW,bufferLock);
+     MyConsumer consumer1 = new MyConsumer(buffer, ThreadColor.ANSI_PURPLE,bufferLock);
+     MyConsumer consumer2 = new MyConsumer(buffer, ThreadColor.ANSI_CYAN,bufferLock);
      new Thread(producer).start();
      new Thread(consumer1).start();
      new Thread(consumer2).start();
@@ -38,10 +38,11 @@ class MyProducer implements Runnable{
             try {
                 System.out.println(color+"Adding..."+num);
                 bufferLock.lock();
-//                synchronized (buffer){
+                try{
                     buffer.add(num);
-//                }
-                bufferLock.unlock();
+                }finally {
+                    bufferLock.unlock();
+                }
                 Thread.sleep(random.nextInt(1000));
             }catch (InterruptedException e){
                 System.out.println("Producer was interrupted");
@@ -49,11 +50,11 @@ class MyProducer implements Runnable{
         }
         System.out.println("Adding EOF and exiting...");
         bufferLock.lock();
-//        synchronized (buffer){
+        try{
             buffer.add("EOF");
-//        }
-        bufferLock.unlock();
-
+        }finally {
+            bufferLock.unlock();
+        }
     }
 }
 class MyConsumer implements Runnable {
@@ -68,23 +69,28 @@ class MyConsumer implements Runnable {
     }
 
     public void run() {
+        int counter =0;
         while (true) {
-              bufferLock.lock();
-//            synchronized (buffer) {
-                if (buffer.isEmpty()) {
-                    bufferLock.unlock();
-                    continue;
-                }
-                if (buffer.get(0).equals(EOF)) {
-                    System.out.println(color + "Exiting");
-                    bufferLock.unlock();
-                    break;
-                } else {
-                    System.out.println(color + "Removed " + buffer.remove(0));
-                }
-            bufferLock.unlock();
+//              bufferLock.lock();
+              if(bufferLock.tryLock()){
+                  try {
+                      if (buffer.isEmpty()) {
+                          continue;
+                      }
+                      System.out.println(color+ "The counter = "+counter);
+                      counter=0;
+                      if (buffer.get(0).equals(EOF)) {
+                          System.out.println(color + "Exiting");
+                          break;
+                      } else {
+                          System.out.println(color + "Removed " + buffer.remove(0));
+                      }
+                  }finally {
+                      bufferLock.unlock();
+                  }
+              }else {
+                  counter++;
+              }
             }
-
-//        }
     }
 }
